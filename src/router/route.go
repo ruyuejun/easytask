@@ -10,6 +10,7 @@ func InitRouter() *gin.Engine {
 
 	//路由模块化
 	testRouter(router)				// 测试模块
+	accountRouter(router)			// 账户模块
 	userRouter(router)				// 用户模块
 
 	return router

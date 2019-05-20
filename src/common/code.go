@@ -1,4 +1,4 @@
-package config
+package common
 
 /*
 	这里没有使用 CODE["OK"] = code_obj{1, "ok"}  这样更简单直观的map结构
@@ -6,7 +6,7 @@ package config
 	采用繁琐的结构体，却能直接使用点语法快速获取
  */
 
-type code struct {
+type Code struct {
 	OK
 	SerErr
 	DBErr
@@ -16,7 +16,7 @@ type code struct {
 	AccountFound
 }
 
-var CODE code
+var CODE Code
 
 func init() {
 

@@ -1,8 +1,8 @@
 package masterCtr
 
 import (
-	"Demo1/common"
-	"Demo1/jobmanager"
+	"dcs-gocron/common"
+	"dcs-gocron/task"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,17 +13,17 @@ func SaveJob(c *gin.Context) {
 	command := c.PostForm("command")
 	cronExpr := c.PostForm("cronExpr")
 
-	job := &jobmanager.Job{
+	job := &task.Job{
 		Name:    name,
 		Command: command,
 		CronExpr: cronExpr,
 	}
 
-	oldJob, err := jobmanager.GJobManager.SaveJob(job)
+	oldJob, err := task.GJobManager.SaveJob(job)
 	if err != nil {
-		c.JSON(http.StatusOK, common.CreateCode(common.ServerErr, err))
+		c.JSON(http.StatusOK, common.NewCode(common.ServerErr, err))
 	}
-	c.JSON(http.StatusOK, common.CreateCode(common.OK, oldJob))
+	c.JSON(http.StatusOK, common.NewCode(common.OK, oldJob))
 }
 
 func DeleteJob(c *gin.Context) {
@@ -32,17 +32,17 @@ func DeleteJob(c *gin.Context) {
 	command := c.PostForm("command")
 	cronExpr := c.PostForm("cronExpr")
 
-	job := &jobmanager.Job{
+	job := &task.Job{
 		Name:    name,
 		Command: command,
 		CronExpr: cronExpr,
 	}
 
-	oldJob, err := jobmanager.GJobManager.DeleteJob(job)
+	oldJob, err := task.GJobManager.DeleteJob(job)
 	if err != nil {
-		c.JSON(http.StatusOK, common.CreateCode(common.ServerErr, err))
+		c.JSON(http.StatusOK, common.NewCode(common.ServerErr, err))
 	}
-	c.JSON(http.StatusOK, common.CreateCode(common.OK, oldJob))
+	c.JSON(http.StatusOK, common.NewCode(common.OK, oldJob))
 }
 
 func KillJob(c *gin.Context) {
@@ -51,24 +51,24 @@ func KillJob(c *gin.Context) {
 	command := c.PostForm("command")
 	cronExpr := c.PostForm("cronExpr")
 
-	job := &jobmanager.Job{
+	job := &task.Job{
 		Name:    name,
 		Command: command,
 		CronExpr: cronExpr,
 	}
 
-	oldJob, err := jobmanager.GJobManager.KillJob(job)
+	oldJob, err := task.GJobManager.KillJob(job)
 	if err != nil {
-		c.JSON(http.StatusOK, common.CreateCode(common.ServerErr, err))
+		c.JSON(http.StatusOK, common.NewCode(common.ServerErr, err))
 	}
-	c.JSON(http.StatusOK, common.CreateCode(common.OK, oldJob))
+	c.JSON(http.StatusOK, common.NewCode(common.OK, oldJob))
 }
 
 func ListJobs(c *gin.Context) {
 
-	jobList, err := jobmanager.GJobManager.ListJobs()
+	jobList, err := task.GJobManager.ListJobs()
 	if err != nil {
-		c.JSON(http.StatusOK, common.CreateCode(common.ServerErr, err))
+		c.JSON(http.StatusOK, common.NewCode(common.ServerErr, err))
 	}
-	c.JSON(http.StatusOK, common.CreateCode(common.OK, jobList))
+	c.JSON(http.StatusOK, common.NewCode(common.OK, jobList))
 }

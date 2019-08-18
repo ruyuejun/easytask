@@ -34,7 +34,7 @@ func init() {
 	AccountFound = &res{2002, "信息已存在", nil}
 }
 
-func CreateCode(res *res, data interface{}) *res{
+func NewCode(res *res, data interface{}) *res{
 	res.Data = data
 	return res
 }

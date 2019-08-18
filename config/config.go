@@ -12,7 +12,7 @@ type Config struct {
 
 var GConfig *Config
 
-func Init(filename string) (err error){
+func NewConfig(filename string) (err error){
 
 	var conf Config
 

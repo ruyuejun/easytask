@@ -1,7 +1,7 @@
 package router
 
 import (
-	"Demo1/controllers/masterCtr"
+	"dcs-gocron/controllers/masterCtr"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +14,7 @@ func masterRouter(r *gin.Engine) {
 	r.POST("job/delete", masterCtr.DeleteJob)
 
 	// 杀死任务
-	r.POST("job/delete", masterCtr.KillJob)
+	r.POST("job/kill", masterCtr.KillJob)
 
 	// 查询任务
 	r.POST("job/list", masterCtr.ListJobs)

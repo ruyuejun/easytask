@@ -1,11 +1,11 @@
 package router
 
 import (
-	"Demo1/middleware"
+	"dcs-gocron/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter() *gin.Engine {
+func NewRouters() *gin.Engine {
 
 	gin.SetMode(gin.DebugMode)
 

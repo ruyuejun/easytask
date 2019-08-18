@@ -1,7 +1,7 @@
 package test
 
 import (
-	"Demo1/router"
+	"dcs-gocron/router"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestUserRouter_userLogin(t *testing.T) {
-	r := router.InitRouter()
+	r := router.NewRouters()
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodGet, "/user/login", nil)
 	r.ServeHTTP(w, req)

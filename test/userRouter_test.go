@@ -1,7 +1,7 @@
 package test
 
 import (
-	"dcs-gocron/router"
+	"dcs-gocron/web/router"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"

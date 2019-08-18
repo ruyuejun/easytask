@@ -1,7 +1,7 @@
 package router
 
 import (
-	"dcs-gocron/controllers/masterCtr"
+	"dcs-gocron/web/controllers/masterCtr"
 	"github.com/gin-gonic/gin"
 )
 

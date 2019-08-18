@@ -1,1 +1,1 @@
-master模块：基于gin搭建的任务增删改查模块。  worker模块：- 将etcd的任务同步到内存- 实现调度模块：基于cron表达式调度N个任务- 实现执行模块：并发执行多个job- 使用分布式锁，应对集群并发- 日志保存到mongodb
+## 配置准备`config/config.json`中 `etcd_endpoints` 字段为etcd集群地址，需要提前配置，这里只是一个测试示例## 一 master#### 1.1 master简介master模块是基于gin搭建的任务增删改查模块。  #### 1.2 master启动```go run master```## 二 worker#### 2.1 worker简介worker模块是任务核心处理模块。  #### 2.2 worker启动```go run worker```#### 2.3 worker 主要功能- 将etcd的任务同步到内存- 实现调度模块：基于cron表达式调度N个任务- 实现执行模块：并发执行多个job- 使用分布式锁，应对集群并发- 日志保存到mongodb

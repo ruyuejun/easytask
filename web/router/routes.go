@@ -1,7 +1,7 @@
 package router
 
 import (
-	"dcs-gocron/middleware"
+	"dcs-gocron/web/middleware"
 	"github.com/gin-gonic/gin"
 )
 

@@ -3,11 +3,17 @@ package main
 import (
 	"dcs-gocron/config"
 	"dcs-gocron/task"
+	"flag"
 	"fmt"
 	"time"
 )
 
 func main() {
+
+	// 解析命令行参数
+	var confFile string
+	flag.StringVar(&confFile, "config", "./config/config.json", "指定配置文件")
+	flag.Parse()
 
 	// 初始化配置文件
 	err := config.NewConfig("./config/config.json")
@@ -15,6 +21,9 @@ func main() {
 		fmt.Println("err:", err)
 		return
 	}
+
+	// 启动执行器
+	task.NewExecutor()
 
 	// 启动调度器
 	task.NewScheduler()

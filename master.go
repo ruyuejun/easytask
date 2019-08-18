@@ -3,7 +3,7 @@ package main
 import (
 	"dcs-gocron/config"
 	"dcs-gocron/task"
-	"dcs-gocron/router"
+	"dcs-gocron/web/router"
 	"fmt"
 )
 

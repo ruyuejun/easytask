@@ -1,20 +1,13 @@
 package task
 
-const (
-	JOB_EVENT_SAVE = 1
-	JOB_EVENT_DELET = 2
-)
-
-// 变化事件： SAVE, DELETE
-type JobEvent struct {
-	EventType int
-	Job *Job
+type JobEvent struct{
+	EventType 	int // SAVE DELETE
+	EventJob 	*Job
 }
 
-func NewJobEvent(eventType int, job *Job) *JobEvent{
-	e := &JobEvent{
+func NewJobEvent(eventType int, job *Job)(jobEvent *JobEvent) {
+	return &JobEvent{
 		EventType: eventType,
-		Job:       job,
+		EventJob: job,
 	}
-	return e
 }

@@ -1,0 +1,7 @@
+{
+  "apiPort": 3060,
+  "apiReadTimeout": 5000,
+  "apiWriteTimeout": 5000,
+  "workerEndPonts": ["http://localhost:2379"],
+  "workerDialTimeout": 5000
+}

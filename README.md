@@ -40,3 +40,25 @@ go run main.go -s worker
 cd frontend
 npm run serve
 ```
+
+任务保存数据为：
+
+```txt
+    [
+        {
+            "name": "/job/demo1",
+            "command": "echo 111",
+            "expr": "*/1 * * * * * *"
+        },
+        {
+            "name": "/job/demo2",
+            "command": "echo 222",
+            "expr": "*/2 * * * * * *"
+        },
+        {
+            "name": "/job/demo3",
+            "command": "echo 333",
+            "expr": "*/5 * * * * * *"
+        }
+    ]
+```

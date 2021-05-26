@@ -15,7 +15,7 @@ type JobSchedulePlan struct {
 }
 
 func NewJobSchedulerPlan(job *Job)(jobSchedulePlan *JobSchedulePlan, err error){
-
+	fmt.Println("new job plan ：", job.Expr)
 	expr, err := cronexpr.Parse(job.Expr)
 	if err != nil {
 		fmt.Println("new JobSchedulerPlan err:", err)

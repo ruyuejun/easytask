@@ -46,69 +46,72 @@ func InitManager() {
 		lease,
 		watcher,
 	}
+
+	// 派发任务
+	GM.Dispatch()
 }
 
-// 监视
-func (manager *Manager) Watch() {
+// 派发：系统首次启动要派发所有任务给调度协程
+func (manager *Manager) Dispatch() {
 
-	var watchChan clientv3.WatchChan
-	var watchRes clientv3.WatchResponse
-	var watchEvent *clientv3.Event
-	var job *Job
 	var jobEvent *JobEvent
 
-	// 首先：系统启动时要推送所有任务给调度协程
 	getRes, err := GM.KV.Get(context.TODO(), GC.JOB_SAVE_DIR, clientv3.WithPrefix())
+	if err != nil {
+		fmt.Println("watch err:", err)
+		return
+	}
 	for _, kvpair := range getRes.Kvs {
-		job := &Job{}
-		err = json.Unmarshal(kvpair.Value, job)
+		dispatchJob := &Job{}
+		err = json.Unmarshal(kvpair.Value, dispatchJob)
 		if err != nil {
 			fmt.Println("Unmarshal warn:", err)
+			return
 		}
-
-		// 构建任务
-		jobEvent = NewJobEvent(GC.JOB_EVENT_SAVE, job)
-		fmt.Println("*jobEvent:", *jobEvent)
-
-		// 推送任务给调度协程
+		// 把该任务同步给调度协程执行调度
+		jobEvent = NewJobEvent(GC.JOB_EVENT_DELETE, dispatchJob)
+		fmt.Println("派发任务：", jobEvent.EventJob.Name)
 		GScheduler.PushJobEvent(jobEvent)
 	}
 
-	// 其次：系统启动后要从下一次 revision 开始向后监听变化事件
-	go func(){
+	// 监视后续任务变化
+	manager.watch(getRes)
+}
 
-		// 启动监听，监听 任务目录后续变化
+// 监视：系统启动后要从下一次 revision 开始向后监听变化事件
+func (manager *Manager) watch(getRes *clientv3.GetResponse) {
+	var jobEvent *JobEvent
+	go func(){
+		// 启动监听，监听任务目录后续变化
 		watchStartRevision := getRes.Header.Revision + 1
-		watchChan = GM.Watcher.Watch(context.TODO(), GC.JOB_SAVE_DIR, clientv3.WithRev(watchStartRevision), clientv3.WithPrefix())
+		watchChan := GM.Watcher.Watch(context.TODO(), GC.JOB_SAVE_DIR, clientv3.WithRev(watchStartRevision), clientv3.WithPrefix())
 		
-		for watchRes = range watchChan {
-			for _, watchEvent = range watchRes.Events {
+		for watchRes := range watchChan {
+			for _, watchEvent := range watchRes.Events {
 
 				// 构建任务
 				switch watchEvent.Type {
-				case mvccpb.PUT:		// 构建更新任务事件
-					job = &Job{}
-					err = json.Unmarshal(watchEvent.Kv.Value, job)
+
+				case mvccpb.PUT:		// 构建更新任务事件：让调度协程更新该任务信息，下次按照新信息执行
+					putJob := &Job{}
+					err := json.Unmarshal(watchEvent.Kv.Value, putJob)
 					if err != nil {
 						fmt.Println("Unmarshal warn:", err)
 						continue
 					}
-					jobEvent = NewJobEvent(GC.JOB_EVENT_SAVE, job)
+					jobEvent = NewJobEvent(GC.JOB_EVENT_SAVE, putJob)
 
-				case mvccpb.DELETE:	 	// 构建删除任务事件
-					jobName := strings.TrimPrefix(string(watchEvent.Kv.Key), GC.JOB_SAVE_DIR)
-					job = &Job{
-						Name: jobName,
+				case mvccpb.DELETE:	 	// 构建删除任务事件：让调度协程终止该任务
+					delJob := &Job{
+						Name: strings.TrimPrefix(string(watchEvent.Kv.Key), GC.JOB_SAVE_DIR),
 					}
-					jobEvent = NewJobEvent(GC.JOB_EVENT_DELETE, job)
+					jobEvent = NewJobEvent(GC.JOB_EVENT_DELETE, delJob)
 				}
-				fmt.Println("推送的事件是：", *jobEvent)
 
 				// 推送任务事件给调度协程 Scheduler
+				fmt.Println("监听任务：", jobEvent.EventJob.Name)
 				GScheduler.PushJobEvent(jobEvent)
 			}
 		}
 	}()
-
-	return
 }

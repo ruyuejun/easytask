@@ -48,7 +48,6 @@ func InitManager() {
 	}
 }
 
-
 // 监视
 func (manager *Manager) Watch() {
 

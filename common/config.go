@@ -22,7 +22,6 @@ func InitConfig(commonFilePath string){
 		panic(err)
 	}
 
-
 	err = json.Unmarshal(content, &GConfig)
 	if err != nil {
 		panic(err)

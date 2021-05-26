@@ -7,12 +7,12 @@ type Response struct {
 	Data 	interface{}				`json:"data"`
 }
 
-var OK *Response
-var ServerError *Response
-var NotFound *Response
-var ParamWrong *Response
-var AccountNotFound *Response
-var AccountFound *Response
+var OK 					*Response
+var ServerError 		*Response
+var NotFound 			*Response
+var ParamWrong 			*Response
+var AccountNotFound 	*Response
+var AccountFound 		*Response
 
 func init() {
 

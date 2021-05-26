@@ -2,6 +2,7 @@ package router
 
 import (
 	"easycron/master/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 

@@ -2,7 +2,7 @@ package service
 
 import (
 	"easycron/common"
-	"easycron/master/model"
+	"easycron/task"
 )
 
 type JobService struct{
@@ -10,7 +10,7 @@ type JobService struct{
 
 func (service *JobService) SaveJob(name string, command string, expr string) (resp *common.Response){
 
-	job := &model.JobModel{
+	job := &task.Job{
 		Name: 		name,
 		Command: 	command,
 		Expr: 		expr,
@@ -30,7 +30,7 @@ func (service *JobService) SaveJob(name string, command string, expr string) (re
 
 func (service *JobService) DeleteJob(name string)  (resp *common.Response) {
 
-	job := &model.JobModel{
+	job := &task.Job{
 		Name: name,
 		Command: "",
 		Expr: "",
@@ -57,7 +57,7 @@ func (service *JobService) UpdateJob(name string, command string, expr string) (
 
 func (service *JobService) ListJobs(name string)  (resp *common.Response) {
 
-	job := &model.JobModel{
+	job := &task.Job{
 		Name: name,
 	}
 	
@@ -74,7 +74,7 @@ func (service *JobService) ListJobs(name string)  (resp *common.Response) {
 
 func (service *JobService) KillJob(name string)  (resp *common.Response) {
 
-	job := &model.JobModel{
+	job := &task.Job{
 		Name: name,
 		Command: "",
 		Expr: "",

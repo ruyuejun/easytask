@@ -6,8 +6,8 @@
 
 项目核心：
 
-- 调度器：高可用
-- 执行器：可扩展，以支持大量任务的并发执行
+-   调度器：高可用
+-   执行器：可扩展，以支持大量任务的并发执行
 
 满足的 CAP 特性（一致性--最终一致性、可用性、分区容错性）：P 必须满足
 
@@ -19,7 +19,9 @@
 
 由于每个 workker 都是全量任务，就需要抢占 etcd 的分布式锁，以解决并发调度问题。
 
-## 第一步 环境创建
+## 项目启动
+
+### 创建环境
 
 创建 docker 本地环境：
 
@@ -34,16 +36,9 @@ docker run -d --name myetcd --publish 2379:2379 \
 bitnami/etcd:latest
 ```
 
-一些错误：
+贴士 ：Go1.13/1.14 项目在启动时，由于 go mod 包版本原因会报如下错误：`undefined: balancer.PickOptions`，可以在 go.mod 中添加：`replace google.golang.org/grpc => google.golang.org/grpc v1.26.0`。
 
-```txt
-错误一：Go1.13与1.14项目在启动时，由于go mod包版本原因会报如下错误：
-          undefined: balancer.PickOptions
-      解决：go.mod 添加：replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
-
-```
-
-启动:
+### 启动
 
 ```txt
 # 启动 master，这是默认启动方式，可以忽略 -s 参数
@@ -52,7 +47,7 @@ go run main.go -s master
 # 启动 worker
 go run main.go -s worker
 
-# 启动 frontend，这是前端开发环境。之所以将前后端代码混合，是因为该项目极小
+# 启动 frontend开发环境
 cd frontend
 npm run serve
 ```
